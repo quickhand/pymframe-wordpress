@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <style>
+        .container, .chartcontainer, svg {
+            width: 100%;
+        }
+        svg text {
+            font-family: sans-serif;
+            font-size: 10px;
+        }
+        svg path {
+            fill: none;
+            stroke: #ccc;
+        }
+        svg line {
+            stroke: #ccc;
+        }
+        text {
+            font-family: sans-serif;
+            font-size: 10px;
+        }
+        rect {
+            fill: cadetblue;
+        }
+        rect:hover {
+            fill: #666;
+        }
+        path {
+            fill: none;
+            stroke: #ccc;
+        }
+        line {
+            stroke: #ccc;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chartcontainer">
+            <svg>
+            </svg>
+        </div>
+        <div class="legend">
+            <h5>Legend</h5>
+            <p>A: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>B: Nam lacinia gravida turpis at vestibulum.</p>
+            <p>C: Duis justo ex, ornare non ante at, feugiat venenatis quam.</p>
+            <p>D-O: Duis tincidunt sem vitae sem vestibulum pharetra. Donec eu dignissim sem.</p>
+            <p>Source: Nonsense Inc.</p>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
+    <script>
+        /* IGNORE THIS, JUST A D3 CHART  -- THE PYM.JS CODE IS AT THE BOTTOM*/
+        
+        var maxWidth = 900, rightPadding = 0;
+        var xScale, yScale, xAxisComponent;
+        var numBars = 15, yMax = 100;
+        var data = [];
+
+        var svg = d3.select('svg').attr("width","450").attr("height",350);
+        var container = svg.append("g").attr("class","chart-wrapper");
+        
+        var barGroup = container.append("g").attr("class",'bars')
+        var xAxis = container.append("g").classed("x",true).classed("axis",true);
+        
+
+
+        function intToChar(i) {
+            return String.fromCharCode(i + 65);
+        }
+
+
+        function randomData(data) {
+            for(var i = 0; i < numBars; i++)
+                data[i] = Math.random() * yMax;
+            return data;
+        }
+
+        function initChart() {
+            var width = 400, height = 300;
+
+            data = randomData(data);
+            console.log(data);
+            // Initialise scales
+            xScale = d3.scale.ordinal()
+                .domain(data.map(function(d, i) {return intToChar(i);}))
+                .rangeBands([0, width], 0.04);
+
+            yScale = d3.scale.linear()
+                .domain([0, yMax])
+                .range([height, 0]);
+
+            // Build the x-axis
+            xAxisComponent = d3.svg.axis()
+                .scale(xScale)
+                .orient('bottom');
+
+            xAxis.attr('transform', 'translate(0,'+height+')');
+
+        }
+
+        function initEvents() {
+            window.addEventListener("resize",update);
+        }
+
+
+        /*----
+        UPDATE
+        ----*/
+        function update() {
+            updateScales();
+            updateAxes();
+            updateBars();
+        }
+
+        function updateScales() {
+            
+            var containerwidth = parseInt(window.getComputedStyle(
+                document.querySelector(".chartcontainer"), null)
+                .getPropertyValue("width"));
+                
+            var width = d3.min([containerwidth, maxWidth]) - rightPadding;
+            xScale.rangeBands([0, width], 0.04);
+        }
+
+        function updateAxes() {
+            xAxis.call(xAxisComponent);
+        }
+
+        function updateBars() {
+            var u = barGroup
+                .selectAll('rect')
+                .data(data);
+
+            u.enter()
+                .append('rect');
+
+            u.exit()
+                .remove();
+
+            u
+                .attr('x', function(d, i) {return xScale(intToChar(i));})
+                .attr('width', xScale.rangeBand())
+                .attr('y', function(d) {return yScale(d);})
+                .attr('height', function(d) {return yScale(0) - yScale(d);});
+        }
+
+
+        initChart();
+        update();
+        initEvents();        
+    </script>
+    
+    <!--BELOW IS WHAT YOU NEED TO MAKE THE CHART RESPONSIVE-->
+    <script type="text/javascript" src="./pym.min.js"></script>
+    <script type="text/javascript">var pymChild = new pym.Child({polling: 1000});</script>
+</body>
+</html>
