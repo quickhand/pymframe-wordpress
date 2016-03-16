@@ -18,9 +18,10 @@ Create a page, say a responsive d3 visualization and host it somewhere (e.g. htt
 At the bottom of your html file, after all other scripts, include the following lines:
 
 ```
-<script type="text/javascript" src="./pym.min.js"></script>
+<script type="text/javascript" src="pym.min.js"></script>
 <script type="text/javascript">var pymChild = new pym.Child({polling: 1000});</script>
 ```
+(You'll need to download pym.min.js for this to work)
 
 ###Installation and use
 
