@@ -2,7 +2,7 @@
 
 ##What is it?
 
-Pymframe integrates NPR's excellent pym.js library into Wordpress. 
+Pymframe is a preposterously simple Wordpress integration of NPR's excellent pym.js library (http://blog.apps.npr.org/pym.js/). 
 
 Pym.js allows for responsive iFrames by allowing a parent page and iframed child page to communicate. The child page communicates its height and the parent page adjusts the iframe's height accordingly.
 
