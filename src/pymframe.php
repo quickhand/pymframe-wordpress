@@ -1,6 +1,6 @@
 <?php
 /* Plugin Name: Pymframe Plugin
-Plugin URI: http://chinadailyasia.com/
+Plugin URI: https://github.com/quickhand/pymframe-wordpress
 Description: Embed responsively
 Version: 1.0
 Author: Marc Lajoie
